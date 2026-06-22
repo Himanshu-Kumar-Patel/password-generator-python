@@ -3,6 +3,10 @@ import string
 
 length = int(input("Enter password length: "))
 
+if length<8:
+	print("Disclaimer: Password length must be greater than or equal to 8")
+	exit()
+
 characters = ""
 
 uppercase = input("Include uppercase letters? (y/n): ")
@@ -24,6 +28,10 @@ if numbers=="y":
 
 if symbols=="y":
 	characters+=string.punctuation
+
+if characters=="":
+	print("Error: Select at least one character type")
+	exit()
  
 
 password = ""
