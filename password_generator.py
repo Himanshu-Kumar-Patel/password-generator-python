@@ -1,42 +1,55 @@
 import random
 import string
 
-length = int(input("Enter password length: "))
 
-if length<8:
-	print("Disclaimer: Password length must be greater than or equal to 8")
-	exit()
+def get_character_pool():
+    characters = ""
 
-characters = ""
+    uppercase = input("Include uppercase letters? (y/n): ")
+    lowercase = input("Include lowercase letters? (y/n): ")
+    numbers = input("Include numbers? (y/n): ")
+    symbols = input("Include symbols? (y/n): ")
 
-uppercase = input("Include uppercase letters? (y/n): ")
-lowercase = input("Include lowercase letters? (y/n): ")
-numbers = input("Include numbers? (y/n): ")
-symbols = input("Include symbols? (y/n): ")
+    if uppercase == "y":
+        characters += string.ascii_uppercase
 
-if uppercase=="y":
-	characters+=string.ascii_uppercase
+    if lowercase == "y":
+        characters += string.ascii_lowercase
 
+    if numbers == "y":
+        characters += string.digits
 
-if lowercase=="y":
-	characters+=string.ascii_lowercase
+    if symbols == "y":
+        characters += string.punctuation
 
-
-if numbers=="y":
-	characters+=string.digits
+    return characters
 
 
-if symbols=="y":
-	characters+=string.punctuation
+def generate_password(length, characters):
+    password = ""
 
-if characters=="":
-	print("Error: Select at least one character type")
-	exit()
- 
+    for i in range(length):
+        password += random.choice(characters)
 
-password = ""
+    return password
 
-for i in range(length):
-    password += random.choice(characters)
 
-print("Generated Password:", password)
+def main():
+    length = int(input("Enter password length: "))
+
+    if length < 8:
+        print("Password length must be greater than or equal to 8")
+        return
+
+    characters = get_character_pool()
+
+    if characters == "":
+        print("Error: Select at least one character type.")
+        return
+
+    password = generate_password(length, characters)
+
+    print("Generated Password:", password)
+
+
+main()
