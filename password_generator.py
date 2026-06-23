@@ -76,6 +76,8 @@ def main():
 
     count=int(input("How many passwords you want to generate? "))
     print() #for space 
+  
+    saved_passwords=[]
 
     for i in range(count):
         password = generate_password(length, characters)
@@ -83,6 +85,20 @@ def main():
         strength = check_strength(password)
         print("Strength: ",strength)
         print()
+        saved_passwords.append(f"Password {i+1}: {password} \nStrength: {strength}\n")
+
+    save=input("Save passwords to file? (y/n): ")
+
+    if save.lower()=="y":
+        file=open("password.txt","w")
+	
+        for item in saved_passwords:
+            file.write(item)
+            file.write("\n")
+
+        file.close()
+
+        print("Passowrd saved successfully.")
 
 
 
