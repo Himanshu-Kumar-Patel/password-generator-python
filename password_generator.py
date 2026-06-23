@@ -65,7 +65,7 @@ def main():
     length = int(input("Enter password length: "))
 
     if length < 8:
-        print("Password length must be greater than or equal to 8")
+        print("Password length must be atleast 8 characters")
         return
 
     characters = get_character_pool()
@@ -74,11 +74,15 @@ def main():
         print("Error: Select at least one character type.")
         return
 
-    password = generate_password(length, characters)
+    count=int(input("How many passwords you want to generate? "))
+    print() #for space 
 
-    print("Generated Password:", password)
-    strength = check_strength(password)
-    print("Strength of password: ",strength)
+    for i in range(count):
+        password = generate_password(length, characters)
+        print(f"Password {i+1}: ", password)
+        strength = check_strength(password)
+        print("Strength: ",strength)
+        print()
 
 
 
