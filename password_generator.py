@@ -22,16 +22,35 @@ def get_character_pool():
     if symbols == "y":
         characters += string.punctuation
 
+    if not (
+        uppercase == "y"
+        and lowercase == "y"
+        and numbers == "y"
+        and symbols == "y"
+    ):
+        return None
+
     return characters
 
 
 def generate_password(length, characters):
-    password = ""
+    password_chars = []
 
-    for i in range(length):
-        password += random.choice(characters)
+    # Guarantee all 4 character types
+    password_chars.append(random.choice(string.ascii_uppercase))
+    password_chars.append(random.choice(string.ascii_lowercase))
+    password_chars.append(random.choice(string.digits))
+    password_chars.append(random.choice(string.punctuation))
 
+    # Fill remaining characters
+    while len(password_chars) < length:
+        password_chars.append(random.choice(characters))
+
+    random.shuffle(password_chars)
+
+    password = "".join(password_chars)
     return password
+
 
 def check_strength(password):
     score = 0
@@ -65,41 +84,51 @@ def main():
     length = int(input("Enter password length: "))
 
     if length < 8:
-        print("Password length must be atleast 8 characters")
+        print("Password length must be at least 8 characters")
         return
 
     characters = get_character_pool()
 
-    if characters == "":
-        print("Error: Select at least one character type.")
+    if characters is None:
+        print(
+            "Error: To use this version, select uppercase, lowercase, numbers, and symbols."
+        )
         return
 
-    count=int(input("How many passwords you want to generate? "))
-    print() #for space 
-  
-    saved_passwords=[]
+    count = int(input("How many passwords you want to generate? "))
+    print()
+
+    saved_passwords = []
 
     for i in range(count):
         password = generate_password(length, characters)
-        print(f"Password {i+1}: ", password)
+
+        print(f"Password {i+1}: {password}")
+
         strength = check_strength(password)
-        print("Strength: ",strength)
+
+        print(f"Strength: {strength}")
         print()
-        saved_passwords.append(f"Password {i+1}: {password} \nStrength: {strength}\n")
 
-    save=input("Save passwords to file? (y/n): ")
+        saved_passwords.append(
+            f"Password {i+1}: {password}\nStrength: {strength}\n"
+        )
 
-    if save.lower()=="y":
-        file=open("password.txt","w")
-	
+    save = input("Save passwords to file? (y/n): ")
+
+    if save.lower() == "y":
+        file = open("password.txt", "a")
+
+        file.write("\n")
+        file.write("===== New Session =====\n\n")
+
         for item in saved_passwords:
             file.write(item)
             file.write("\n")
 
         file.close()
 
-        print("Passowrd saved successfully.")
-
+        print("Passwords saved successfully.")
 
 
 main()
