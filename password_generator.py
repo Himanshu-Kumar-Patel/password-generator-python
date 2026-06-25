@@ -42,14 +42,12 @@ def generate_password(length, characters):
     password_chars.append(random.choice(string.digits))
     password_chars.append(random.choice(string.punctuation))
 
-    # Fill remaining characters
     while len(password_chars) < length:
         password_chars.append(random.choice(characters))
 
     random.shuffle(password_chars)
 
-    password = "".join(password_chars)
-    return password
+    return "".join(password_chars)
 
 
 def check_strength(password):
@@ -72,15 +70,14 @@ def check_strength(password):
 
     if score <= 2:
         return "Weak"
-
     elif score <= 4:
         return "Medium"
-
     else:
         return "Strong"
 
 
-def main():
+def generate_passwords():
+
     length = int(input("Enter password length: "))
 
     if length < 8:
@@ -91,22 +88,22 @@ def main():
 
     if characters is None:
         print(
-            "Error: To use this version, select uppercase, lowercase, numbers, and symbols."
+            "Error: Select uppercase, lowercase, numbers and symbols."
         )
         return
 
-    count = int(input("How many passwords you want to generate? "))
+    count = int(input("How many passwords do you want to generate? "))
     print()
 
     saved_passwords = []
 
     for i in range(count):
-        password = generate_password(length, characters)
 
-        print(f"Password {i+1}: {password}")
+        password = generate_password(length, characters)
 
         strength = check_strength(password)
 
+        print(f"Password {i+1}: {password}")
         print(f"Strength: {strength}")
         print()
 
@@ -117,18 +114,57 @@ def main():
     save = input("Save passwords to file? (y/n): ")
 
     if save.lower() == "y":
-        file = open("password.txt", "a")
 
-        file.write("\n")
-        file.write("===== New Session =====\n\n")
+        with open("password.txt", "a") as file:
 
-        for item in saved_passwords:
-            file.write(item)
             file.write("\n")
+            file.write("===== New Session =====\n\n")
 
-        file.close()
+            for item in saved_passwords:
+                file.write(item)
+                file.write("\n")
 
         print("Passwords saved successfully.")
+
+
+def view_password_history():
+
+    try:
+
+        with open("password.txt", "r") as file:
+
+            print("\n===== PASSWORD HISTORY =====\n")
+
+            print(file.read())
+
+    except FileNotFoundError:
+
+        print("No saved passwords found.")
+
+
+def main():
+
+    while True:
+
+        print("\n===== PASSWORD GENERATOR =====")
+        print("1. Generate Passwords")
+        print("2. View Saved Password History")
+        print("3. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            generate_passwords()
+
+        elif choice == "2":
+            view_password_history()
+
+        elif choice == "3":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
 
 
 main()
