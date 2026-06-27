@@ -142,6 +142,25 @@ def view_password_history():
         print("No saved passwords found.")
 
 
+def delete_password_history():
+
+    confirm = input(
+        "Are you sure you want to delete all saved passwords? (y/n): "
+    )
+
+    if confirm.lower() == "y":
+
+        with open("password.txt", "w") as file:
+            pass
+
+        print("Password history deleted successfully.")
+
+    else:
+        print("Deletion cancelled.")
+
+
+
+
 def main():
 
     while True:
@@ -149,7 +168,8 @@ def main():
         print("\n===== PASSWORD GENERATOR =====")
         print("1. Generate Passwords")
         print("2. View Saved Password History")
-        print("3. Exit")
+        print("3. Delete Password History")
+        print("4. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -160,6 +180,9 @@ def main():
             view_password_history()
 
         elif choice == "3":
+            delete_password_history()
+
+        elif choice == "4":
             print("Goodbye!")
             break
 
